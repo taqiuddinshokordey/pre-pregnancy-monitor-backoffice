@@ -25,16 +25,15 @@ export class Login {
     constructor(private api: ApiService, private router: Router) {}
 
     login() {
-        this.api.post<{ token: string }>('auth/login', {
-            username: this.email,
-            password: this.password
-        }).subscribe({
+        console.log('Login method called');
+        this.api.login(this.email, this.password).subscribe({
             next: (res) => {
-                localStorage.setItem('token', res.token);
+                console.log('Login successful:', res);
                 this.router.navigate(['/dashboard']);
             },
             error: (err) => {
-                alert('Login failed: ' + (err.error?.error));
+                console.error('Login failed:', err);
+                alert('Login failed: ' + (err.error?.message || err.message));
             }
         });
     }
